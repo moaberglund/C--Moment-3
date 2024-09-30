@@ -24,6 +24,7 @@ namespace guestbook
 
             while (true)
             {
+                // Töm konsolen
                 Console.Clear();
                 Console.CursorVisible = false;
 
@@ -39,6 +40,7 @@ namespace guestbook
                     Console.WriteLine($"[{i++}] {p.Owner} - {p.Text}");
                 }
 
+                // Läs in användarens val
                 int choice = (int)Console.ReadKey(true).Key;
                 switch (choice)
                 {
