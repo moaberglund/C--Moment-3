@@ -31,6 +31,7 @@ namespace guestbook
         // lägg till inlägg
         public Post addPost(string o, string t)
         {
+            // validering
             if (string.IsNullOrEmpty(o) || o.Length > 20)
             {
                 throw new ArgumentException("Namnet måste vara mellan 1-20 tecken");
@@ -59,7 +60,7 @@ namespace guestbook
             if (index >= 0 && index < posts.Count)
             {
                 posts.RemoveAt(index);  //ta bort inlägg ur listan
-                marshal();  // spara inlägg
+                marshal();  // spara
                 return index;   
             }
             else{
