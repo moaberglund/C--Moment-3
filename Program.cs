@@ -44,7 +44,7 @@ namespace guestbook
                 {
                     case 49: // 1
                         Console.CursorVisible = true;
-                        Console.WriteLine("Lägg till inlägg\n");
+                        Console.WriteLine("\nLägg till inlägg\n");
 
                         // Be om namn
                         Console.Write("Namn: ");
@@ -71,7 +71,7 @@ namespace guestbook
 
                     case 50: // 2
                         Console.CursorVisible = true;
-                        Console.WriteLine("Ta bort inlägg nummer:\n");
+                        Console.WriteLine("\nTa bort inlägg nummer:\n");
                         string? index = Console.ReadLine();
 
                         if (!String.IsNullOrEmpty(index))
