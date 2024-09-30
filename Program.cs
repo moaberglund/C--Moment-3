@@ -15,14 +15,14 @@ namespace guestbook
     class Program
     {
 
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
 
             // skapa ny gästbok
             GuestBook gb = new GuestBook();
-            int i=0;
+            int i = 0;
 
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Console.CursorVisible = false;
@@ -32,42 +32,62 @@ namespace guestbook
                 Console.WriteLine("2. Ta bort inlägg\n");
                 Console.WriteLine("X. Avsluta\n\n");
 
-                i=0;
+                i = 0;
                 // skriv ut inläggen
-                foreach(Post p in gb.getPosts())
+                foreach (Post p in gb.getPosts())
                 {
                     Console.WriteLine($"[{i++}] {p.Owner} - {p.Text}");
                 }
 
                 int choice = (int)Console.ReadKey(true).Key;
-                switch(choice)
+                switch (choice)
                 {
                     case 49: // 1
                         Console.CursorVisible = true;
                         Console.WriteLine("Lägg till inlägg\n");
+
+                        // Be om namn
                         Console.Write("Namn: ");
                         string? owner = Console.ReadLine();
+
+                        // Be om text
                         Console.Write("Text: ");
                         string? text = Console.ReadLine();
-                        if(!String.IsNullOrEmpty(owner + text)) gb.addPost(owner, text);
+
+                        try
+                        {
+                            // Anropa addpost som innehåller validering
+                            gb.addPost(owner, text);
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            Console.WriteLine($"\nFel: {ex.Message}");
+                        }
+
+                        Console.WriteLine("Tryck på valfri knapp för att gå vidare");
+                        Console.ReadKey();
                         break;
-                        
+
+
                     case 50: // 2
                         Console.CursorVisible = true;
                         Console.WriteLine("Ta bort inlägg nummer:\n");
                         string? index = Console.ReadLine();
-                        if(!String.IsNullOrEmpty(index))
-                            try{
+
+                        if (!String.IsNullOrEmpty(index))
+                            try
+                            {
                                 gb.removePost(Convert.ToInt32(index));
                             }
-                            catch(Exception){
+                            catch (ArgumentOutOfRangeException)
+                            {
                                 Console.WriteLine("Felaktigt index\nTryck på valfri knapp för att gå vidare");
                                 Console.ReadKey();
                             }
 
                         break;
                     case 88: // X
-                    Environment.Exit(0);
+                        Environment.Exit(0);
                         return;
                 }
 

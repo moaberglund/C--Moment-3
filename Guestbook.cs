@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
 
@@ -17,7 +18,7 @@ namespace guestbook
         public GuestBook()
         {
             // kontrollera att filen finns
-            if(File.Exists(filename)==true)
+            if (File.Exists(filename) == true)
             {
                 // läs innehållet i filen
                 string jsonString = File.ReadAllText(filename);
@@ -30,6 +31,16 @@ namespace guestbook
         // lägg till inlägg
         public Post addPost(string o, string t)
         {
+            if (string.IsNullOrEmpty(o) || o.Length > 20)
+            {
+                throw new ArgumentException("Namnet måste vara mellan 1-20 tecken");
+            }
+
+            if (string.IsNullOrEmpty(t) || t.Length > 100)
+            {
+                throw new ArgumentException("Texten får ej vara tom eller längre än 100 tecken");
+            }
+
             // skapa nytt inlägg
             Post obj = new Post();
             obj.Owner = o;
@@ -37,7 +48,7 @@ namespace guestbook
             posts.Add(obj);
 
             // spara inlägg 
-            marsal();
+            marshal();
 
             return obj;
         }
@@ -45,13 +56,16 @@ namespace guestbook
         // ta bort inlägg
         public int removePost(int index)
         {
-            // ta bort inlägg ur listan
-            posts.RemoveAt(index);
-
-            // spara 
-            marsal();
-
-            return index;
+            if (index >= 0 && index < posts.Count)
+            {
+                posts.RemoveAt(index);  //ta bort inlägg ur listan
+                marshal();  // spara inlägg
+                return index;   
+            }
+            else{
+                throw new ArgumentOutOfRangeException("Index out of range");
+            }
+         
         }
 
         // hämta inlägg
@@ -61,7 +75,7 @@ namespace guestbook
         }
 
 
-        private void marsal()
+        private void marshal()
         {
             // serialisera lista till json
             string jsonString = JsonSerializer.Serialize(posts);
